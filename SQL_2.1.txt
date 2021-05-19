@@ -1,0 +1,91 @@
+SQLite version 3.35.4 2021-04-02 15:20:15
+Enter ".help" for usage hints.
+Connected to a transient in-memory database.
+Use ".open FILENAME" to reopen on a persistent database.
+sqlite>
+sqlite> select 10 * 4;
+40
+sqlite> create table Worker(worker id int primary key autoincreament, firstname char(25),lastname char(25), salary int);
+Error: near "autoincreament": syntax error
+sqlite> create table Worker(worker id int primary key auto_increament, firstname char(25),lastname char(25), salary int);
+Error: near "auto_increament": syntax error
+sqlite> create table Worker(worker id int primary key, firstname char(25),lastname char(25), salary int);
+sqlite> drop table Worker;
+sqlite> create table Worker(worker id int primary key, firstname char(25),lastname char(25), salary int);
+sqlite> select * from Worker;
+sqlite> insert into Worker(worker_id , firstname, lastname,salary) values ('1', 'john', 'smith', 10), ('2', 'jane', 'smith', 20),  ('3', 'vazgen', 'xachikyan', 8), ('4', 'nunufar', 'afeyan', 2) , ('5','mukuch', 'colakyan', 12), ('6', 'colak', 'mukuchyan', 20);
+Error: table Worker has no column named worker_id
+sqlite> select * from Worker
+   ...> ;
+sqlite> create table Worker(worker_id int primary key, firstname char(25),lastname char(25), salary int);
+Error: table Worker already exists
+sqlite> drop table Worker;
+sqlite> create table Worker(worker_id int primary key, firstname char(25),lastname char(25), salary int);
+sqlite> insert into Worker(worker_id , firstname, lastname,salary) values ('1', 'john', 'smith', 10), ('2', 'jane', 'smith', 20),  ('3', 'vazgen', 'xachikyan', 8), ('4', 'nunufar', 'afeyan', 2) , ('5','mukuch', 'colakyan', 12), ('6', 'colak', 'mukuchyan', 20);
+sqlite> select * from Worker;
+1|john|smith|10
+2|jane|smith|20
+3|vazgen|xachikyan|8
+4|nunufar|afeyan|2
+5|mukuch|colakyan|12
+6|colak|mukuchyan|20
+sqlite> create table Position(position_id int primary key, firstname char(25), position char(25));
+sqlite> create table Birthdays(bd_id int primary key, firstname char(25), year int);
+sqlite> insert into Position(position_id, firstname, position) values (1, 'vazgen', 'intern'), (2,'armen', 'support'), (3, 'colak', 'ceo'), (4, 'nunufar', 'havaqarar'), (5, 'john', 'manager'), (6, 'mukuch', 'driver'), (7, 'ashxen', 'cto');
+sqlite> insert into Birthdays(bd_id, firstname, year) values (1, 'john', 1980), (2,'jane', 1982), (3,'vazgen', 2000), (4,'nunufar', 1960), (5, 'mukuch', 1970), (6,'colak', 1986), (7, 'armen', 1997), (8,'ashxen',1975);
+sqlite> select * from Birthdays;
+1|john|1980
+2|jane|1982
+3|vazgen|2000
+4|nunufar|1960
+5|mukuch|1970
+6|colak|1986
+7|armen|1997
+8|ashxen|1975
+sqlite> select * from Positions;
+Error: no such table: Positions
+sqlite> select * from Position;
+1|vazgen|intern
+2|armen|support
+3|colak|ceo
+4|nunufar|havaqarar
+5|john|manager
+6|mukuch|driver
+7|ashxen|cto
+sqlite> select * from Worker inner join Position on Worker.firsname = Positon.firstname;
+Error: no such column: Worker.firsname
+sqlite> select * from Worker inner join Position on Worker.firstname = Positon.firstname;
+Error: no such column: Positon.firstname
+sqlite> select * from Worker inner join Position on Worker.firstname = Position.firstname;
+1|john|smith|10|5|john|manager
+3|vazgen|xachikyan|8|1|vazgen|intern
+4|nunufar|afeyan|2|4|nunufar|havaqarar
+5|mukuch|colakyan|12|6|mukuch|driver
+6|colak|mukuchyan|20|3|colak|ceo
+sqlite> select * from Worker inner join Position on Worker.firstname = Position_id;
+sqlite> select * from Worker inner join Position on Worker.firstname = Position.position_id;
+sqlite> select * from Worker inner join Position on Worker.worker_id = Position.position_id;
+1|john|smith|10|1|vazgen|intern
+2|jane|smith|20|2|armen|support
+3|vazgen|xachikyan|8|3|colak|ceo
+4|nunufar|afeyan|2|4|nunufar|havaqarar
+5|mukuch|colakyan|12|5|john|manager
+6|colak|mukuchyan|20|6|mukuch|driver
+sqlite> select Worker.firstname, Worker.salary, Position.position from Worker inner join Position on Worker.firsname = Positon.firstname;
+Error: no such column: Worker.firsname
+sqlite> select Worker.firstname, Worker.salary, Position.position from Worker inner join Position on Worker.firstname = Position.firstname;
+john|10|manager
+vazgen|8|intern
+nunufar|2|havaqarar
+mukuch|12|driver
+colak|20|ceo
+sqlite> select * from Worker left join Position on Worker.firstname = Position.firstname;
+1|john|smith|10|5|john|manager
+2|jane|smith|20|||
+3|vazgen|xachikyan|8|1|vazgen|intern
+4|nunufar|afeyan|2|4|nunufar|havaqarar
+5|mukuch|colakyan|12|6|mukuch|driver
+6|colak|mukuchyan|20|3|colak|ceo
+sqlite> select * from Worker right join Position on Worker.firstname = Position.firstname;
+Error: RIGHT and FULL OUTER JOINs are not currently supported
+sqlite>

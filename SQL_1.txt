@@ -1,0 +1,274 @@
+SQLite version 3.35.4 2021-04-02 15:20:15
+Enter ".help" for usage hints.
+Connected to a transient in-memory database.
+Use ".open FILENAME" to reopen on a persistent database.
+sqlite> select 5 + 5
+   ...> ;
+10
+sqlite> create table persons(hamar int PRIMARY KEY, anun varchar(255), tatarig int);
+sqlite> insert into persons values(1, 'Vachagan', 20)
+   ...> ;
+sqlite> select * from persons;
+1|Vachagan|20
+sqlite> insert into persons values(1, 'Vachagan');
+Error: table persons has 3 columns but 2 values were supplied
+sqlite> insert into persons values(1, 'Vachagan', 20)
+   ...>
+   ...> ;
+Error: UNIQUE constraint failed: persons.hamar
+sqlite> insert into persons values(2, 'torq', 25);
+sqlite> insert into persons values(2, 'tigran', 5);
+Error: UNIQUE constraint failed: persons.hamar
+sqlite> insert into persons values(3, 'tigran', 5);
+sqlite> insert into persons values(4, 'taron', 55);
+sqlite> insert into persons values(5, 'ani', 15);
+sqlite> insert into persons values(5, 'lilit', 61);
+Error: UNIQUE constraint failed: persons.hamar
+sqlite> insert into persons values(6, 'lilit', 61);
+sqlite> select * from persons;
+1|Vachagan|20
+2|torq|25
+3|tigran|5
+4|taron|55
+5|ani|15
+6|lilit|61
+sqlite> select anun from persons;
+Vachagan
+torq
+tigran
+taron
+ani
+lilit
+sqlite> select tatarig, anun;
+Error: no such column: tatarig
+sqlite> select tatarig , anun from persons;
+20|Vachagan
+25|torq
+5|tigran
+55|taron
+15|ani
+61|lilit
+sqlite> select distint anun from persons;
+Error: no such column: distint
+sqlite> select distint anun from persons;
+Error: no such column: distint
+sqlite> select distinct anun from persons;
+Vachagan
+torq
+tigran
+taron
+ani
+lilit
+sqlite> select * from persons where anun = 'lilit';
+6|lilit|61
+sqlite> select * from persons where anun = 't%';
+sqlite> select * from persons where anun like 't%';
+2|torq|25
+3|tigran|5
+4|taron|55
+sqlite> select * from persons;
+1|Vachagan|20
+2|torq|25
+3|tigran|5
+4|taron|55
+5|ani|15
+6|lilit|61
+sqlite> insert into persons values(7, 'lilit', 82);
+sqlite> select * from persons;
+1|Vachagan|20
+2|torq|25
+3|tigran|5
+4|taron|55
+5|ani|15
+6|lilit|61
+7|lilit|82
+sqlite> select * from persons where not anun = 'lilit';
+1|Vachagan|20
+2|torq|25
+3|tigran|5
+4|taron|55
+5|ani|15
+sqlite> select * from persons where anun = 'lilit' or tatarig > 40;
+4|taron|55
+6|lilit|61
+7|lilit|82
+sqlite> select * from persons where anun = 'lilit' and tatarig >70;
+7|lilit|82
+sqlite> select * from persons where anun like 't%' and anun like '$n';
+sqlite> select * from persons where anun like 't%' and anun like '%n';
+3|tigran|5
+4|taron|55
+sqlite> select * from persons where anun like '%a%';
+1|Vachagan|20
+3|tigran|5
+4|taron|55
+5|ani|15
+sqlite> select * from persons order by anun;
+1|Vachagan|20
+5|ani|15
+6|lilit|61
+7|lilit|82
+4|taron|55
+3|tigran|5
+2|torq|25
+sqlite> select * from persons order by anun asc;
+1|Vachagan|20
+5|ani|15
+6|lilit|61
+7|lilit|82
+4|taron|55
+3|tigran|5
+2|torq|25
+sqlite> select * from persons order by anun desc;
+2|torq|25
+3|tigran|5
+4|taron|55
+6|lilit|61
+7|lilit|82
+5|ani|15
+1|Vachagan|20
+sqlite> select * from persons order by hamar, anun, tatarig;
+1|Vachagan|20
+2|torq|25
+3|tigran|5
+4|taron|55
+5|ani|15
+6|lilit|61
+7|lilit|82
+sqlite> select * from persons order by anun, tatarig  desc;
+1|Vachagan|20
+5|ani|15
+7|lilit|82
+6|lilit|61
+4|taron|55
+3|tigran|5
+2|torq|25
+sqlite> update persons set anun = 'anahit';
+sqlite> select * from persons;
+1|anahit|20
+2|anahit|25
+3|anahit|5
+4|anahit|55
+5|anahit|15
+6|anahit|61
+7|anahit|82
+sqlite> update persons set anun = 'anahit' where tatarig > 50;
+sqlite> select * from persons;
+1|anahit|20
+2|anahit|25
+3|anahit|5
+4|anahit|55
+5|anahit|15
+6|anahit|61
+7|anahit|82
+sqlite> update persons set anun = 'grigor';
+sqlite> update persons set anun = 'anahit'  where tatarig > 50;
+sqlite> select * from persons;
+1|grigor|20
+2|grigor|25
+3|grigor|5
+4|anahit|55
+5|grigor|15
+6|anahit|61
+7|anahit|82
+sqlite> update persons set anun = 'meri' where hamar = 1;
+sqlite> select * from persons;
+1|meri|20
+2|grigor|25
+3|grigor|5
+4|anahit|55
+5|grigor|15
+6|anahit|61
+7|anahit|82
+sqlite> select * from persons order by anun;
+4|anahit|55
+6|anahit|61
+7|anahit|82
+2|grigor|25
+3|grigor|5
+5|grigor|15
+1|meri|20
+sqlite> select * from persons order by anun, tatarig desc;
+7|anahit|82
+6|anahit|61
+4|anahit|55
+2|grigor|25
+5|grigor|15
+3|grigor|5
+1|meri|20
+sqlite> delete from persons where hamar > 2;
+sqlite> select * from persons;
+1|meri|20
+2|grigor|25
+sqlite> delete from persons;
+sqlite> select * from persons;
+sqlite> drop table persons;
+sqlite> select * from persons;
+Error: no such table: persons
+sqlite> create table cars(number int primary key, year int, st_wheel text, firm text, horsepower int);
+sqlite> insert into cars values(1, 1974, 'left', 'alpha-romeo', 120);
+sqlite> insert into cars values(2, 2018, 'left', 'lexus', 250);
+sqlite> insert into cars values(3, 2021, 'left', 'mercedes', 350);
+sqlite> insert into cars values(4, 2009, 'right', 'nissan', 110);
+sqlite> insert into cars values(5, 2001, 'right', 'nissan', 10);
+sqlite> insert into cars values(6, 198, 'left', 'opel', 10);
+sqlite> insert into cars values(7, 2004, 'left', 'niva', 180);
+sqlite> select * from cars;
+1|1974|left|alpha-romeo|120
+2|2018|left|lexus|250
+3|2021|left|mercedes|350
+4|2009|right|nissan|110
+5|2001|right|nissan|10
+6|198|left|opel|10
+7|2004|left|niva|180
+sqlite> select min(horsepower) from cars;
+10
+sqlite> select max(horsepower) from cars;
+350
+sqlite> select * from cars where horsepower = 10;
+5|2001|right|nissan|10
+6|198|left|opel|10
+sqlite> select avg(horsepower) from cars;
+147.142857142857
+sqlite> select sum(horsepower) from cars;
+1030
+sqlite> select sum(horsepower) from cars where firm = 'nissan';
+120
+sqlite> select sum(horsepower) from cars where year > 2001;
+890
+sqlite> select sum(horsepower) from cars where year > 2001 or firm = 'niva';
+890
+sqlite> select avg(horsepower) from cars where year > 2001 or firm = 'niva';
+222.5
+sqlite> select * from cars where horsepower between 100 and 200;
+1|1974|left|alpha-romeo|120
+4|2009|right|nissan|110
+7|2004|left|niva|180
+sqlite> select * from cars order by firm;
+1|1974|left|alpha-romeo|120
+2|2018|left|lexus|250
+3|2021|left|mercedes|350
+4|2009|right|nissan|110
+5|2001|right|nissan|10
+7|2004|left|niva|180
+6|198|left|opel|10
+sqlite> select * from cars where firm between 'lexus' and 'nissan';
+2|2018|left|lexus|250
+3|2021|left|mercedes|350
+4|2009|right|nissan|110
+5|2001|right|nissan|10
+sqlite> select * from cars where firm in ('alpha-romeo', 'lexus', 'opel');
+1|1974|left|alpha-romeo|120
+2|2018|left|lexus|250
+6|198|left|opel|10
+sqlite> select * from cars where firm in ('alpha-romeo', 'lexus', 'opel', 'bmw');
+1|1974|left|alpha-romeo|120
+2|2018|left|lexus|250
+6|198|left|opel|10
+sqlite> select * from cars where firm like 'n%';
+4|2009|right|nissan|110
+5|2001|right|nissan|10
+7|2004|left|niva|180
+sqlite> select * from cars where firm like '%-rom%';
+1|1974|left|alpha-romeo|120
+sqlite>
